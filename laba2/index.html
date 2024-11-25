@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ъеъ</title>
+    <style>
+        #colorBox {
+            width: 400px;
+            height: 400px;
+            background-color: rgb(0, 0, 0);
+            margin: 10px;
+        }
+        #text {
+            font-size: 20px;
+            margin: 20px;
+            transition: color 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <h1>Картинк</h1>
+
+   
+    <div class="slidecontainer">
+        <input type="range" min="0" max="255" value="0" id="red-slider">
+        <input type="range" min="0" max="255" value="0" id="green-slider">
+        <input type="range" min="0" max="255" value="0" id="blue-slider">
+    </div>
+     <div id="colorBox"> </div>
+
+<div id="letter-square"></div>
+     <script>
+const redSlider = document.getElementById('red-slider');
+const greenSlider = document.getElementById('green-slider');
+const blueSlider = document.getElementById('blue-slider');
+const colorBox = document.getElementById('colorBox');
+
+        const updateBackgroundColor = () => {
+  const redValue = redSlider.value;
+  const greenValue = greenSlider.value;
+  const blueValue = blueSlider.value;
+
+
+             colorBox.style.backgroundColor = 'rgb(' + [redValue,greenValue,blueValue].join(',') +')';
+        };
+
+        redSlider.addEventListener('input', updateBackgroundColor);
+greenSlider.addEventListener('input', updateBackgroundColor);
+blueSlider.addEventListener('input', updateBackgroundColor);
+         
+     </script>
+</body>
+</html>
