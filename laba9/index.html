@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Рисовалка</title>
+</head>
+<body>
+  <canvas id="myCanvas" width="1200px" height="780px" style="border: 1px solid black;"></canvas>
+   <p>Текущий инструмент: <span id="currentTool">Рисование</span></p>
+  <label for="colorPicker">Выберите цвет:</label>
+  <input type="color" id="colorPicker" value="#000000">
+    <label for="lineWidth">Толщина линии:</label>
+<input type="range" id="lineWidth" min="1" max="100" value="2">
+  <br>
+   <button onclick="Line()">Рисование</button>
+   <button onclick="toggleEraser()">Ластик</button>
+   <button onclick="toggleFill()">Заливка</button>
+  <br>
+    <label for="shapeSelector">Выберите фигуру:</label>
+ <select id="shapeSelector" onchange="setShape(this.value)">
+   <option value="line">Линия</option>
+   <option value="triangle">Треугольник</option>
+   <option value="circle">Круг</option>
+   <option value="rectangle">Прямоугольник</option>
+</select>
+    <label for="shapeSize">Размер фигур:</label>
+<input type="range" id="shapeSize" min="10" max="700" value="30">
+<br>
+  <button onclick="clearCanvas()">Очистить холст</button>
+  <script src="main.js"></script>
+</body>
+</html>
