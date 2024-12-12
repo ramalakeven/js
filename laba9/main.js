@@ -122,7 +122,6 @@ function toggleFill() {
   updateToolIndicator();
 }
 
-// заливка АААААААААААААААА
 function floodFill(x, y, fillColor) {
   const canvasWidth = canvas.width;
   const canvasHeight = canvas.height;
@@ -190,7 +189,6 @@ function floodFill(x, y, fillColor) {
 
   ctx.putImageData(imageData, 0, 0);
 }
-//РИДФАЙЛ ПАЙТОН(ДЖАВАСКРИПТ) ОКЕЙ БИМБИМБИМ БАМБАМБАМБАМ БУМБУМБУМБУМБУМ
 canvas.addEventListener("click", (e) => {
   if (!isFill) return;
   const rect = canvas.getBoundingClientRect();
