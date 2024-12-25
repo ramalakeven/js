@@ -8,8 +8,10 @@ let selectedShape = "line";
 let prevX = null;
 let prevY = null;
 
+// Получаем индикатор инструмента
 const currentToolIndicator = document.getElementById("currentTool");
 
+// Преобразование координат мыши к холсту
 function getMousePos(event) {
   const rect = canvas.getBoundingClientRect();
   return {
@@ -63,6 +65,7 @@ const shapeSizeInput = document.getElementById("shapeSize");
 
 let shapeSize = shapeSizeInput.value;
 
+// Обновляем размер фигуры
 shapeSizeInput.addEventListener("input", () => {
   shapeSize = shapeSizeInput.value;
 });
@@ -85,54 +88,56 @@ function drawShape(x, y) {
       ctx.fill();
       break;
 
-    case "circle":
+    case "circle": // Круг
       ctx.beginPath();
       ctx.arc(x, y, shapeSize / 2, 0, 2 * Math.PI);
       ctx.fill();
       break;
 
-    case "rectangle":
+    case "rectangle": // Прямоугольник
       ctx.beginPath();
       ctx.rect(x - shapeSize / 2, y - shapeSize / 4, shapeSize, shapeSize / 2);
       ctx.fill();
       break;
   }
 }
-
+// Очистка холста
 function clearCanvas() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-
+// Переключение ластика
 function toggleEraser() {
   isEraser = !isEraser;
   isFill = false;
   updateToolIndicator();
 
 }
-
+// Переключение линии
 function Line() {
   isEraser = false;
   isFill = false;
   updateToolIndicator();
 
 }
-
+// Переключение заливки
 function toggleFill() {
   isFill = !isFill;
   updateToolIndicator();
 }
-
+// Заливка 
 function floodFill(x, y, fillColor) {
   const canvasWidth = canvas.width;
   const canvasHeight = canvas.height;
 
+  // Получаем данные пикселей
   const imageData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
   const data = imageData.data;
-
+  
+// Конвертируем координаты в индекс массива
   function getIndex(x, y) {
     return (y * canvasWidth + x) * 4;
   }
-
+// Получаем цвет пикселя
   function getPixelColor(x, y) {
     const index = getIndex(x, y);
     return {
@@ -142,7 +147,7 @@ function floodFill(x, y, fillColor) {
       a: data[index + 3],
     };
   }
-
+// Устанавливаем цвет пикселя
   function setPixelColor(x, y, color) {
     const index = getIndex(x, y);
     data[index] = color.r;
@@ -150,19 +155,19 @@ function floodFill(x, y, fillColor) {
     data[index + 2] = color.b;
     data[index + 3] = color.a;
   }
-
+  // Проверяем, равны ли два цвета
   function colorsMatch(c1, c2) {
     return c1.r === c2.r && c1.g === c2.g && c1.b === c2.b && c1.a === c2.a;
   }
 
-  const targetColor = getPixelColor(x, y);
+  const targetColor = getPixelColor(x, y); // Цвет начальной точки
   const fillRGB = {
     r: parseInt(fillColor.slice(1, 3), 16),
     g: parseInt(fillColor.slice(3, 5), 16),
     b: parseInt(fillColor.slice(5, 7), 16),
     a: 255,
   };
-
+ // Если цвет начальной точки уже совпадает с цветом заливки, ничего не делаем
   if (colorsMatch(targetColor, fillRGB)) return;
 
   const stack = [[x, y]];
@@ -186,9 +191,10 @@ function floodFill(x, y, fillColor) {
       stack.push([currentX, currentY - 1]);
     }
   }
-
+ // Применяем изменения к холсту
   ctx.putImageData(imageData, 0, 0);
 }
+// Заливка по клику
 canvas.addEventListener("click", (e) => {
   if (!isFill) return;
   const rect = canvas.getBoundingClientRect();
@@ -199,17 +205,19 @@ canvas.addEventListener("click", (e) => {
   floodFill(x, y, fillColor);
 });
 
+// Выбор фигуры
 function setShape(value) {
   selectedShape = value;
 }
 const lineWidthInput = document.getElementById("lineWidth");
 
-
+// Обновляем толщину линии при изменении ползунка
 ctx.lineWidth = lineWidthInput.value;
 lineWidthInput.addEventListener("input", () => {
   ctx.lineWidth = lineWidthInput.value;
 });
 
+// При рисовании линии учитываем текущую толщину
 canvas.addEventListener("mousemove", (event) => {
   if (!isDrawing || selectedShape !== "line") return;
   if (isFill) return;
@@ -225,11 +233,13 @@ canvas.addEventListener("mousemove", (event) => {
   prevY = y;
 });
 
+// Функция выбора фигуры
 function setShape(value) {
   selectedShape = value;
   updateToolIndicator();
 }
 
+// Функция обновления текста индикатора
 function updateToolIndicator() {
   const toolName = isEraser ? "Ластик" : "Рисование";
   const shapeName = {
